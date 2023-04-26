@@ -1,0 +1,6 @@
+version: '3'
+services:
+  web:
+    image: app/capstone-public-dev:${BUILD_NUMBER}
+    ports:
+    - 80:80
