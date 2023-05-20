@@ -28,7 +28,10 @@ pipeline{
                     sh 'docker tag /usr/src/app/capstone-public-dev:${BUILD_NUMBER} /usr/src/app/capstone-public-dev:latest'
                     sh 'docker push /usr/src/app/capstone-public-dev:latest'
                 }
-                
+                stage('Initialize') {
+        def dockerHome = tool 'myDocker'
+        env.PATH = "${dockerHome}/bin:${env.PATH}"
+    }
             }
                  
             }
