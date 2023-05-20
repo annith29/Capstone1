@@ -16,22 +16,19 @@ pipeline{
             steps{
                 echo "We are in deploy stage. Lets deploy the image now using docker compose"
                 sh 'docker-compose up -d'
-                echo "Check with ip address http://13.126.68.146:80"
+                echo "Check with ip address http://:http://13.234.232.73/80"
         
             }
         }
         stage("Push to Docker Dev"){
             steps{
-                echo "Now, lets push the image to dev repository in docker"
+                echo "push the image to dev repository in docker"
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_id', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
                     sh 'docker login --username=${docker_username} --password=${docker_password}'
-                    sh 'docker tag /usr/src/app/capstone-public-dev:${BUILD_NUMBER} /usr/src/app/capstone-public-dev:latest'
-                    sh 'docker push /usr/src/app/capstone-public-dev:latest'
+                    sh 'docker tag annith29/capstone-public-dev:${BUILD_NUMBER} annith29/capstone-public-dev:latest'
+                    sh 'docker push annith29/capstone-public-dev:latest'
                 }
-                stage('Initialize') {
-        def dockerHome = tool 'myDocker'
-        env.PATH = "${dockerHome}/bin:${env.PATH}"
-    }
+               
             }
                  
             }
