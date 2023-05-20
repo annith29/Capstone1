@@ -6,7 +6,7 @@ pipeline{
             steps{
                 echo "We are in Build step now"
                 
-                git branch: 'dev', url: 'https://github.com/annith29/Capstone1.git'
+                git branch: 'dev', url: 'https://github.com/annith29/capstone1.git'
                 sh 'chmod +x ./build.sh'
                 sh 'sh ./build.sh'
                 
@@ -16,7 +16,7 @@ pipeline{
             steps{
                 echo "We are in deploy stage. Lets deploy the image now using docker compose"
                 sh 'docker-compose up -d'
-                echo "Check with ip address http://http://13.234.232.73/:80"
+                echo "Check with ip address http://http://13.234.34.244/:80"
         
             }
         }
