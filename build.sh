@@ -1,7 +1,6 @@
-echo "Enter image name:"
+#!/bin/bash
 
-echo "Enter image version:"
-
-docker build -t $IMAGE_NAME:$IMAGE_VERSION .
-
+apt-get update && apt install docker.io -y 
+docker --version
+docker build -t reactapp:latest .
 docker images 
