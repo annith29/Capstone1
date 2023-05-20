@@ -1,6 +1,7 @@
 version: '3'
 services:
-  web:
-    image: annith29/capstone-public-dev:${BUILD_NUMBER}
+  app:
+    image: annith29/prod:latest
+    restart: always
     ports:
-    - 80:80
+      - "81:80"
