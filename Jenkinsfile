@@ -31,10 +31,11 @@ pipeline{
               expression { BRANCH_NAME == 'master' }
             }
             steps {
-                DOCKERHUB_CREDENTIALS=credentials('dockerid') {
-                 sh 'sudo docker login -u satheeka -p satheesh1'
-                 sh 'sudo docker tag react-app:latest satheeka/prod:latest'
-                 sh 'sudo docker push satheeka/prod:latest'
+                DOCKERHUB_CRED1ENTIALS=credentials('dockerid') {
+                    sh 'sudo docker login -u annith29 --password=${docker_password}'
+                    sh 'sudo docker tag react-app:latest annith29/dev:react-app'
+                    sh 'sudo docker push annith29/dev:react-app'
+                 
                 }           
             }
         }    
