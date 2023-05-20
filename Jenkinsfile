@@ -22,11 +22,10 @@ pipeline{
         }
         stage("Push to Docker Dev"){
             steps{
-                echo "push the image to dev repository in docker"
-                withCredentials([usernamePassword(credentialsId: 'dockerhub_id', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
-                    sh 'docker login --username=${docker_username} --password=${docker_password}'
-                    sh 'docker tag annith29/capstone-public-dev:${BUILD_NUMBER} annith29/capstone-public-dev:latest'
-                    sh 'docker push annith29/capstone-public-dev:latest'
+                sh 'sudo docker login -u annith29 --password=${docker_password}'
+                sh 'sudo docker tag react-app:latest annith29/dev:react-app'
+                sh 'sudo docker push annith29/dev:react-app'
+                echo "image push at  dev dockerhub"
                 }
                
             }
