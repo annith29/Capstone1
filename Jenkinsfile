@@ -6,7 +6,7 @@ pipeline{
             steps{
                 echo "We are in Build step now"
                 
-                git branch: 'dev', url: 'https://github.com/annith29/Capstone1.git'
+                git branch: 'dev', url: 'https://github.com/annith29/capstone1.git'
                 sh 'chmod +x ./build.sh'
                 sh 'sh ./build.sh'
                 
@@ -16,18 +16,19 @@ pipeline{
             steps{
                 echo "We are in deploy stage. Lets deploy the image now using docker compose"
                 sh 'docker-compose up -d'
-                echo "Check with ip address http://:http://13.234.34.244/80"
+                echo "Check with ip address http://13.234.34.244:80"
         
             }
         }
         stage("Push to Docker Dev"){
             steps{
-                sh 'sudo docker login -u annith29 --password=${docker_password}'
-                sh 'sudo docker tag react-app:latest annith29/dev:react-app'
-                sh 'sudo docker push annith29/dev:react-app'
-                echo "image push at  dev dockerhub"
+                echo "Now, lets push the image to dev repository in docker"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_id', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
+                    sh 'docker login --username=${docker_username} --password=${docker_password}'
+                    sh 'docker tag react-app:latest annith29/dev:react-app'
+                    sh 'sudo docker push annith29/dev:react-app'
                 }
-               
+                
             }
                  
             }
