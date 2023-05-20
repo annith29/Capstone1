@@ -25,8 +25,8 @@ pipeline{
                 echo "Now, lets push the image to dev repository in docker"
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_id', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
                     sh 'docker login --username=${docker_username} --password=${docker_password}'
-                    sh 'docker tag /usr/src/app/capstone-public-dev:${BUILD_NUMBER} /usr/src/app/capstone-public-dev:latest'
-                    sh 'docker push /usr/src/app/capstone-public-dev:latest'
+                    sh 'docker tag annith29/capstone-public-dev:${BUILD_NUMBER} annith29/capstone-public-dev:latest'
+                    sh 'docker push annith29/capstone-public-dev:latest'
                 }
                 
             }
