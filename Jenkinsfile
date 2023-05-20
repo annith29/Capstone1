@@ -2,47 +2,41 @@ pipeline{
     agent any
     
     stages{
-        stage("Build"){
+        stage('start'){
             steps{
-                echo "We are in Build step now"
-                
-                git branch: 'dev', url: 'https://github.com/annith29/capstone1.git'
-                sh 'chmod +x ./build.sh'
-                sh 'sh ./build.sh'
-                
+                sh 'npm install'
             }
         }
-        stage("Deploy to the site"){
+        stage('run build.sh'){
             steps{
-                echo "We are in deploy stage. Lets deploy the image now using docker compose"
-                sh 'docker-compose up -d'
-                echo "Check with ip address http://13.234.34.244:80"
-        
+                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/annith29/Capstone1.git']])
+                 sh 'npm run build'
+                 sh 'chmod +x ./build.sh'
+                 sh './build.sh'
             }
         }
-        stage("Push to Docker Dev"){
+        stage('push Dev Repo'){
+             when {
+              expression { BRANCH_NAME == 'dev' }
+            }
             steps{
-                echo "Now, lets push the image to dev repository in docker"
-                withCredentials([usernamePassword(credentialsId: 'dockerhub_id', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
-                    sh 'docker login --username=${docker_username} --password=${docker_password}'
-                    sh 'docker tag annith29/capstone-public-dev:${BUILD_NUMBER} annith29/capstone-public-dev:latest'
-                    sh 'docker push annith29/capstone-public-dev:latest'
+                DOCKERHUB_CREDENTIALS=credentials('dockerid') {
+                sh 'chmod 777 ./deploy.sh'
+                sh './deploy.sh'
                 }
-                
             }
-                 
+        }
+        stage('push Prod repo'){
+            when {
+              expression { BRANCH_NAME == 'master' }
             }
+            steps {
+                DOCKERHUB_CREDENTIALS=credentials('dockerid') {
+                 sh 'sudo docker login -u satheeka -p satheesh1'
+                 sh 'sudo docker tag react-app:latest satheeka/prod:latest'
+                 sh 'sudo docker push satheeka/prod:latest'
+                }           
+            }
+        }    
     }
-
-post{
-    always{
-        echo "A normal messgae which gets printed on success or failure. "
-    }
-    success{
-        echo "Its success"
-    }
-    failure{
-        echo "Its failure"
-    }
-}
 }
