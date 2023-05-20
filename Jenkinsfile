@@ -16,7 +16,7 @@ pipeline{
             steps{
                 echo "We are in deploy stage. Lets deploy the image now using docker compose"
                 sh 'docker-compose up -d'
-                echo "Check with ip address http://13.126.68.146:80"
+                echo "Check with ip address http://http://13.234.232.73/:80"
         
             }
         }
