@@ -1,13 +1,10 @@
-FROM node:latest 
-RUN apt-get update && apt-get install -y nginx
-RUN rm /etc/nginx/sites-enabled/default 
-COPY nginx.conf /etc/nginx/sites-enabled/
-WORKDIR /usr/src/app
-ENV NODE_OPTIONS="--openssl-legacy-provider"
-COPY package*.json ./
+FROM node:16-alpine as build
+WORKDIR /capapp
+COPY package*.json /capapp/
 RUN npm install
 COPY . .
 RUN npm run build
-RUN echo "server {\n\tlisten 80;\n\troot /usr/src/app/build;\ntindex index.html;\n\tserver_name localhost;\n}" > etc/nginx/sites-enabled/default
-EXPOSE 80 
-CMD ["nginx", "-g" ,"daemon off;"]
+FROM nginx:latest
+COPY --from=build /capapp/build/ /usr/share/nginx/html/
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
