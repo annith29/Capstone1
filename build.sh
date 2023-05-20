@@ -17,3 +17,7 @@ cat Dockerfile
 
 
 echo "Now we will create an image using this docker file with when function using jenkins "
+docker build -t annith29/capstone-public-dev:${BUILD_NUMBER} .
+
+
+
