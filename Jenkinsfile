@@ -32,7 +32,7 @@ pipeline{
             }
             steps {
                 DOCKERHUB_CRED1ENTIALS=credentials('dockerid') {
-                    sh 'sudo docker login -u annith29 --password=${docker_password}'
+                    sh 'sudo docker login -u annith29 -p Trichy#290689'
                     sh 'sudo docker tag react-app:latest annith29/dev:react-app'
                     sh 'sudo docker push annith29/dev:react-app'
                  
